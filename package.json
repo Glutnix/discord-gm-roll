@@ -1,0 +1,24 @@
+{
+  "name": "discord-gm-roll",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+		"start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Glutnix@github.com/Glutnix/discord-gm-roll.git"
+  },
+  "author": "Glutnix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Glutnix/discord-gm-roll/issues"
+  },
+  "homepage": "https://github.com/Glutnix/discord-gm-roll#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "eslint": "^5.0.1"
+  }
+}
