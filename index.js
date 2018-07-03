@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const prefix = '/gm';
+const prefix = process.env.PREFIX;
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -17,16 +17,26 @@ const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
 	console.log('Ready!');
+	client.user.setUsername('Discord GM Roll');
+	client.user.setPresence({
+		'game': { name: `with your mind! ${prefix} help` },
+		status: 'online',
+	});
 });
 
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).split(/ +/);
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
+
+	console.log('got command', commandName, args);
+
+	if (commandName === '') message.channel.send(`Hi! I can answer yes/no questions! See what I can do with \`${prefix} help\`.`);
 
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
 
 	if (!command) return;
 
@@ -35,10 +45,10 @@ client.on('message', message => {
 	}
 
 	if (command.args && !args.length) {
-		let reply = `You didn't provide any arguments, ${message.author}!`;
+		let reply = `You didn't provide any arguments, ${message.author}! Try ${prefix} help`;
 
 		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+			reply += `\nThe proper usage would be: \`${prefix} ${command.name} ${command.usage}\``;
 		}
 
 		return message.channel.send(reply);
@@ -78,3 +88,34 @@ client.on('message', message => {
 });
 
 client.login(DISCORD_BOT_TOKEN);
+
+// so the program will not close instantly
+process.stdin.resume();
+
+function exitHandler(options, err) {
+	if (options.cleanup) cleanup();
+	if (err && err.stack) {
+		console.log('error stack:', err.stack);
+	}
+	if (options.exit) process.exit();
+}
+
+function cleanup() {
+	if (client) {
+		console.log('going offline.');
+		client.user.setStatus('invisible');
+	}
+}
+
+// do something when app is closing
+process.on('exit', exitHandler.bind(null, { cleanup: true }));
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
