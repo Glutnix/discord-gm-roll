@@ -20,5 +20,8 @@
   "dependencies": {
     "discord.js": "^11.3.2",
     "eslint": "^5.0.1"
-  }
+	},
+	"engines": {
+		"node": "10.5.0"
+	}
 }
