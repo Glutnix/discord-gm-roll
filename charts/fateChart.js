@@ -74,7 +74,7 @@ const fateChart = [
 	},
 	{
 		name: 'Somewhat Likely',
-		aliases: ['4', 'SL'],
+		aliases: ['6', 'SL'],
 		table: [
 			OUTCOMES.NA,
 			OUTCOMES.N,
