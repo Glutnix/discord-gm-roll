@@ -7,7 +7,7 @@ const rolld10 = () => {
 const rollNd10s = (diceRolls) => {
 	const rolls = [];
 	for (let i = 0; i < diceRolls; i++) {
-		rolls.push(rolld10);
+		rolls.push(rolld10());
 	}
 	return rolls;
 };
@@ -19,33 +19,44 @@ const rolld10BestOf = (rolls) => {
 };
 const rolld10WorstOf = (rolls) => {
 	return rolls.reduce(
-		(highRoll, currentRoll) => highRoll > currentRoll ? highRoll : currentRoll
+		(lowRoll, currentRoll) => lowRoll < currentRoll ? lowRoll : currentRoll
 	);
 };
 
-const rollAlias = (alias) => {
-	const chart = aliasLookup[alias.toLowerCase()];
-	if (!chart) {
-		throw new Error(`no table matches the code *${alias}*`);
-	}
-
-	let roll;
+const rollChart = (chart) => {
+	let diceRolls, diceRoll;
 
 	if (chart.takeBest) {
-		roll = rolld10BestOf(rollNd10s(chart.diceRolls));
+		diceRolls = rollNd10s(chart.diceRolls);
+		diceRoll = rolld10BestOf(diceRolls);
 	}
 	else if (chart.takeWorst) {
-		roll = rolld10WorstOf(rollNd10s(chart.diceRolls));
+		diceRolls = rollNd10s(chart.diceRolls);
+		diceRoll = rolld10WorstOf(diceRolls);
 	}
 	else {
-		roll = rolld10();
+		diceRoll = rolld10();
 	}
-	console.log('dice roll', roll);
-	return chart.table[roll];
+	console.log('dice roll', diceRoll);
+	return {
+		result: chart.table[diceRoll],
+		diceRoll: diceRoll + 1,
+		diceRolls: (diceRolls ? diceRolls.map(r => r + 1) : undefined),
+	};
 };
 
-console.log('roll', rollAlias('ew'));
+
+const findChart = (alias) => {
+	const chart = aliasLookup[alias.toLowerCase()];
+	if (!chart) {
+		throw new Error(`I don't know what likelyhood table *${alias}* is.`);
+	}
+	return chart;
+};
+
+console.log('roll', rollChart(findChart('2')));
 
 module.exports = {
-	rollAlias,
+	rollChart,
+	findChart,
 };

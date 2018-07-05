@@ -1,4 +1,4 @@
-const { rollAlias } = require('../charts/chartRoller');
+const { rollChart, findChart } = require('../charts/chartRoller');
 
 const usage = `[probability code] [question]\n
 Probability Codes:
@@ -14,14 +14,20 @@ Probability Codes:
 
 const command = {
 	name: 'ask',
+	aliases: ['a'],
 	description: 'Answer a yes or no question. Specify a probability too!',
 	cooldown: 2,
 	usage,
 	execute(message, args) {
 		const alias = args.join(' ');
 		try {
-			const roll = rollAlias(alias);
-			message.channel.send(roll);
+			const chart = findChart(alias);
+			const { result, diceRoll, diceRolls } = rollChart(chart);
+			const outputDiceRolls = chart.diceRolls ? ` => (${diceRolls.join()}) ` : '';
+			const output =
+`[${chart.name}] (${chart.diceRolls || 1}d10 ${outputDiceRolls} => **${diceRoll}**)
+	__**${result}**__`;
+			message.channel.send(output);
 		}
 		catch (err) {
 			message.channel.send(err.message);
