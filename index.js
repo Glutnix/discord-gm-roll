@@ -17,7 +17,7 @@ const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
 	console.log('Ready!');
-	client.user.setUsername('Discord GM Roll');
+	client.user.setUsername('Game Master Emulator');
 	client.user.setPresence({
 		'game': { name: `with your mind! ${prefix} help` },
 		status: 'online',
