@@ -33,5 +33,23 @@ So no dragon, and I've found it's lair!
 Rats, obviously the looters got here before me.
 ```
 
+## Likelihood tables
+
+| table code   |           XU           |            VU            |             U            |           SU          |       EW       |          SL         |            L            |            VL           |          XL          |
+|--------------|:----------------------:|:------------------------:|:------------------------:|:---------------------:|:--------------:|:-------------------:|:-----------------------:|:-----------------------:|:--------------------:|
+| other        |           AI           |                          |                          |                       |      50/50     |                     |                         |                         |          ST          |
+|              |            1           |             2            |             3            |           4           |        5       |          6          |            7            |            8            |           9          |
+| d10          | **Extremely Unlikely** |     **Very Unlikely**    |       **Unlikely**       | **Somewhat Unlikely** | **Either Way** | **Somewhat Likely** |        **Likely**       |     **Very Likely**     | **Extremely Likely** |
+| **10**       |          Yes.          | worst roll of 3d10 on EW | worst roll of 2d10 on EW |      Yes, and...      |   Yes, and...  |     Yes, and...     | best roll of 2d10 on EW | best roll of 3d10 on EW |      Yes, and...     |
+| **9**        |       No, but...       |                          |                          |          Yes.         |      Yes.      |         Yes.        |                         |                         |      Yes, and...     |
+| **8**        |           No.          |                          |                          |          Yes.         |      Yes.      |         Yes.        |                         |                         |         Yes.         |
+| **7**        |           No.          |                          |                          |           YB          |      Yes.      |         Yes.        |                         |                         |         Yes.         |
+| **6**        |           No.          |                          |                          |       No, but...      |   Yes, but...  |         Yes.        |                         |                         |         Yes.         |
+| **5**        |           No.          |                          |                          |          No.          |   No, but...   |     Yes, but...     |                         |                         |         Yes.         |
+| **4**        |           No.          |                          |                          |          No.          |       No.      |      No, but...     |                         |                         |         Yes.         |
+| **3**        |           No.          |                          |                          |          No.          |       No.      |         No.         |                         |                         |         Yes.         |
+| **2**        |       No, and...       |                          |                          |          No.          |       No.      |         No.         |                         |                         |      Yes, but...     |
+| **1**        |       No, and...       |                          |                          |       No, and...      |   No, and...   |      No, and...     |                         |                         |          No.         |
+
 GM Roll is not a dice bot. If you need to roll a `d20`, `4dF+2` or `1d10!>9`, I recommend [Sidekick](https://github.com/ArtemGr/Sidekick/). We're not competing with this. GM Roll is going to be an emulated GM -- more of an virtual oracle than a virtual polyhedral chucker.
 
