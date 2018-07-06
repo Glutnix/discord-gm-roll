@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const prefix = process.env.PREFIX;
+const prefix = process.env.BOT_COMMAND_PREFIX;
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
