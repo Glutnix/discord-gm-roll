@@ -18,8 +18,12 @@ const cooldowns = new Discord.Collection();
 client.on('ready', () => {
 	console.log(`Ready! Listening for commands with ${prefix}`);
 	client.user.setUsername('Game Master Emulator');
+	client.guilds.every((guild) => guild.me.setNickname('GM Emulator'));
 	client.user.setPresence({
-		'game': { name: `with your mind! ${prefix} help` },
+		game: {
+			name: `*${prefix}* commands`,
+			type: 'LISTENING',
+		},
 		status: 'online',
 	});
 });
