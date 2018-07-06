@@ -16,7 +16,7 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
-	console.log('Ready!');
+	console.log('Ready! Listening for commands with ${prefix}');
 	client.user.setUsername('Game Master Emulator');
 	client.user.setPresence({
 		'game': { name: `with your mind! ${prefix} help` },
