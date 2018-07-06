@@ -12,7 +12,10 @@ module.exports = {
 
 		if (!args.length) {
 			data.push('Here\'s a list of all my commands:');
+			data.push('1, 2, 3, 4, 5, 6, 7, 8, 9');
+			data.push('XU, VU, U, SU, EW, SL, L, VL, XL');
 			data.push(commands.map(command => command.name).join(', '));
+			data.push('\nI default to the \'EW\' command if I can\'t figure out which likelihood you want.');
 			data.push(`\nYou can send \`${prefix} help [command name]\` to get info on a specific command!`);
 
 			return message.author.send(data, { split: true })

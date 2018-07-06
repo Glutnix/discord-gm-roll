@@ -1,8 +1,8 @@
 const { rollChart } = require('../charts/chart-roller');
 const { askParser } = require('./parsers/ask-parser');
 
-const usage = `[[question]?] {probability code}\n
-Probability Codes:
+const usage = `[[question]?] {likelihood code}\n
+Likelihood Codes:
 1, XU, Extremely Unlikely
 2, VU, Very Unlikely
 3, U, Unlikely
@@ -16,7 +16,7 @@ Probability Codes:
 const command = {
 	name: 'ask',
 	aliases: ['a'],
-	description: 'Answer a yes or no question. Specify a probability too!',
+	description: 'Answer a yes or no question. Specify a likelihood too!',
 	cooldown: 2,
 	usage,
 	execute(message, args) {
