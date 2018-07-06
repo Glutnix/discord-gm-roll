@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+		"start": "node index.js",
+		"dev": "nf start",
     "test": "jest"
   },
   "repository": {
@@ -24,7 +25,8 @@
     "node": "10.5.0"
   },
   "devDependencies": {
-    "jest": "^23.3.0",
-    "eslint": "^5.0.1"
+    "eslint": "^5.0.1",
+    "foreman": "3.0.1",
+    "jest": "^23.3.0"
   }
 }
