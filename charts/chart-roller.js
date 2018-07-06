@@ -47,6 +47,7 @@ const rollChart = (chart) => {
 
 
 const findChart = (alias) => {
+	if (!alias) return false;
 	const chart = aliasLookup[alias.toLowerCase()];
 	if (!chart) {
 		return false;
