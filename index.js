@@ -28,24 +28,24 @@ client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const commandName = args.shift().toLowerCase();
+	const commandName = args.shift().toLowerCase() || 'ask';
 
-	console.log('got command', commandName, args);
+	let command = client.commands.get(commandName)
+	|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-	if (commandName === '') message.channel.send(`Hi! I can answer yes/no questions! See what I can do with \`${prefix} help\`.`);
+	if (!command) {
+		args.unshift(commandName);
+		command = client.commands.get('ask');
+	}
 
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-
-	if (!command) return;
+	console.log('got command', command.name, args);
 
 	if (command.guildOnly && message.channel.type !== 'text') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
 
 	if (command.args && !args.length) {
-		let reply = `You didn't provide any arguments, ${message.author}! Try ${prefix} help`;
+		let reply = `You didn't provide any arguments, ${message.author}! Try ${prefix} help ${commandName}`;
 
 		if (command.usage) {
 			reply += `\nThe proper usage would be: \`${prefix} ${command.name} ${command.usage}\``;

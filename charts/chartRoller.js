@@ -37,7 +37,7 @@ const rollChart = (chart) => {
 	else {
 		diceRoll = rolld10();
 	}
-	console.log('dice roll', diceRoll);
+
 	return {
 		result: chart.table[diceRoll],
 		diceRoll: diceRoll + 1,
@@ -49,12 +49,10 @@ const rollChart = (chart) => {
 const findChart = (alias) => {
 	const chart = aliasLookup[alias.toLowerCase()];
 	if (!chart) {
-		throw new Error(`I don't know what likelihood table *${alias}* is.`);
+		return false;
 	}
 	return chart;
 };
-
-console.log('roll', rollChart(findChart('2')));
 
 module.exports = {
 	rollChart,

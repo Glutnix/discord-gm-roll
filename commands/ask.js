@@ -1,6 +1,7 @@
-const { rollChart, findChart } = require('../charts/chartRoller');
+const { rollChart } = require('../charts/chartRoller');
+const { askParser } = require('./parsers/askParser');
 
-const usage = `[probability code] [question]\n
+const usage = `[[question]?] {probability code}\n
 Probability Codes:
 1, XU, Extremely Unlikely
 2, VU, Very Unlikely
@@ -19,19 +20,11 @@ const command = {
 	cooldown: 2,
 	usage,
 	execute(message, args) {
-		const alias = args.join(' ');
-		try {
-			const chart = findChart(alias);
-			const { result, diceRoll, diceRolls } = rollChart(chart);
-			const outputDiceRolls = chart.diceRolls ? ` => (${diceRolls.join()}) ` : '';
-			const output =
-`[${chart.name}] (${chart.diceRolls || 1}d10 ${outputDiceRolls} => **${diceRoll}**)
-	__**${result}**__`;
-			message.channel.send(output);
-		}
-		catch (err) {
-			message.channel.send(err.message);
-		}
+		const { chart, question } = askParser(args);
+		const { result, diceRoll, diceRolls } = rollChart(chart);
+		const outputDiceRolls = chart.diceRolls ? `=> (${diceRolls.join()}) ` : '';
+		const output = `[${chart.name}] (${chart.diceRolls || 1}d10 ${outputDiceRolls}=> **${diceRoll}**) ${question}\n\t__**${result}**__`;
+		message.channel.send(output);
 	},
 };
 
