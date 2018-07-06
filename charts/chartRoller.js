@@ -49,7 +49,7 @@ const rollChart = (chart) => {
 const findChart = (alias) => {
 	const chart = aliasLookup[alias.toLowerCase()];
 	if (!chart) {
-		throw new Error(`I don't know what likelyhood table *${alias}* is.`);
+		throw new Error(`I don't know what likelihood table *${alias}* is.`);
 	}
 	return chart;
 };

@@ -121,10 +121,10 @@ const fateChart = [
 ];
 
 const aliasLookup = fateChart.reduce(
-	(table, likelyhood) => Object.assign(
-		table,
-		likelyhood.aliases.reduce(
-			(aliasMap, alias) => Object.assign(aliasMap, { [alias.toLowerCase()]: likelyhood }),
+	(lookup, likelihood) => Object.assign(
+		lookup,
+		likelihood.aliases.reduce(
+			(aliasMap, alias) => Object.assign(aliasMap, { [alias.toLowerCase()]: likelihood }),
 			{}
 		)
 	),
