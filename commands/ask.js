@@ -1,5 +1,5 @@
-const { rollChart } = require('../charts/chartRoller');
-const { askParser } = require('./parsers/askParser');
+const { rollChart } = require('../charts/chart-roller');
+const { askParser } = require('./parsers/ask-parser');
 
 const usage = `[[question]?] {probability code}\n
 Probability Codes:

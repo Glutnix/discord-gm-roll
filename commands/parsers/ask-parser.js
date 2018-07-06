@@ -1,4 +1,4 @@
-const { findChart } = require('../../charts/chartRoller');
+const { findChart } = require('../../charts/chart-roller');
 const askParser = (args) => {
 	const load = args.join(' ');
 	const question = load.substring(0, load.lastIndexOf('?') + 1);

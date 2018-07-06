@@ -1,4 +1,4 @@
-const { aliasLookup } = require('./fateChart.js');
+const { aliasLookup } = require('./fate-chart');
 
 const rolld10 = () => {
 	return Math.floor(Math.random() * 10);
