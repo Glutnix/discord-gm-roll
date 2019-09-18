@@ -14,6 +14,7 @@ module.exports = {
 			data.push('Here\'s a list of all my commands:');
 			data.push('1, 2, 3, 4, 5, 6, 7, 8, 9');
 			data.push('XU, VU, U, SU, EW, SL, L, VL, XL');
+			data.push('(see https://github.com/Glutnix/discord-gm-roll#likelihood-tables)');
 			data.push(commands.map(command => command.name).join(', '));
 			data.push('\nI default to the \'EW\' command if I can\'t figure out which likelihood you want.');
 			data.push(`\nYou can send \`${prefix} help [command name]\` to get info on a specific command!`);
@@ -25,7 +26,7 @@ module.exports = {
 				})
 				.catch(error => {
 					console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-					message.reply('it seems like I can\'t DM you!');
+					message.reply('... hmm... it seems like I can\'t DM you!');
 				});
 		}
 
