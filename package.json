@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"start": "node index.js",
-		"dev": "nf start",
+    "start": "node index.js",
+    "dev": "nf start",
     "test": "jest"
   },
   "repository": {
@@ -19,14 +19,14 @@
   },
   "homepage": "https://github.com/Glutnix/discord-gm-roll#readme",
   "dependencies": {
-    "discord.js": "^11.3.2"
+    "discord.js": "^11.5.1"
   },
   "engines": {
     "node": "10.5.0"
   },
   "devDependencies": {
-    "eslint": "^5.0.1",
-    "foreman": "3.0.1",
-    "jest": "^23.3.0"
+    "eslint": "^5.16.0",
+    "foreman": "^3.0.1",
+    "jest": "^23.6.0"
   }
 }

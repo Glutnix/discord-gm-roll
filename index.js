@@ -91,7 +91,12 @@ client.on('message', message => {
 	}
 });
 
-client.login(DISCORD_BOT_TOKEN);
+try {
+	client.login(DISCORD_BOT_TOKEN).catch();
+}
+catch (err) {
+	throw err;
+}
 
 // so the program will not close instantly
 process.stdin.resume();
