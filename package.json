@@ -19,14 +19,13 @@
   },
   "homepage": "https://github.com/Glutnix/discord-gm-roll#readme",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^12.4.1"
   },
   "engines": {
     "node": "10.5.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "foreman": "^3.0.1",
-    "jest": "^23.6.0"
+    "eslint": "^7.12.1",
+    "foreman": "^3.0.1"
   }
 }

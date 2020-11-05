@@ -6,10 +6,10 @@ module.exports = {
 	cooldown: 5,
 	execute(message) {
 		message.channel.send('Bot Statistics.');
-		const guildList = message.client.guilds.map(guild => `• ${guild.name}`);
+		const guildList = message.client.guilds.cache.map(guild => `• ${guild.name}`);
 
 		const data = [];
-		data.push(`Discord servers I am in: ${guildList.length}`);
+		data.push(`Huh, I'm currently a member of ${guildList.length} servers! That's pretty sweet!`);
 
 		if (message.author.id !== DISCORD_ADMIN_USERID) {
 			message.author.send(data, { split: true })
@@ -19,7 +19,10 @@ module.exports = {
 			return;
 		}
 
+		// continue for the admin user
+
 		data.push(...guildList);
+
 		message.author.send(data, { split: true })
 			.then(() => {
 				if (message.channel.id !== message.author.dmChannel.id) {

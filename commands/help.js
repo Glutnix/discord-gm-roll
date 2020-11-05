@@ -11,13 +11,18 @@ module.exports = {
 		const { commands } = message.client;
 
 		if (!args.length) {
-			data.push('Here\'s a list of all my commands:');
-			data.push('1, 2, 3, 4, 5, 6, 7, 8, 9');
-			data.push('XU, VU, U, SU, EW, SL, L, VL, XL');
+			data.push('I simulate a game master for roleplaying without a game master.');
+			data.push('\nMention me in a chat: ask a question about what happens next, and I\'ll respond with a “yes” “no” style answer.');
+			data.push('Sometimes I\'ll make it more interesting, and say something like “yes, and” or “no, but”. You then can role-play your way in that direction, guided by my random choice!');
+			data.push(`\nI respond to \`${prefix}\` and any sentence including a likelihood code`);
+			data.push('Here\'s a list of all my likelihood codes:');
+			data.push('`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`');
+			data.push('`XU`, `VU`, `U`, `SU`, `EW`, `SL`, `L`, `VL`, `XL`');
+			data.push('I default to the \'EW\' command if I can\'t figure out which likelihood you want.');
 			data.push('(see https://github.com/Glutnix/discord-gm-roll#likelihood-tables)');
-			data.push(commands.map(command => command.name).join(', '));
-			data.push('\nI default to the \'EW\' command if I can\'t figure out which likelihood you want.');
-			data.push(`\nYou can send \`${prefix} help [command name]\` to get info on a specific command!`);
+			data.push('\nI also look for these words on their own.');
+			data.push(commands.map(command => '`' + command.name + '`').join(', '));
+			data.push(`\nYou can also send \`${prefix} help [command name]\` to get info on a specific command!`);
 
 			return message.author.send(data, { split: true })
 				.then(() => {

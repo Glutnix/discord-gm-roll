@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+const BOT_NICKNAME = process.env.BOT_NICKNAME || 'GM Emulator';
 const prefix = process.env.BOT_COMMAND_PREFIX;
 
 const client = new Discord.Client();
@@ -18,9 +19,9 @@ const cooldowns = new Discord.Collection();
 client.on('ready', () => {
 	console.log(`Ready! Listening for commands with ${prefix}`);
 	client.user.setUsername('Game Master Emulator');
-	client.guilds.every((guild) => guild.me.setNickname('GM Emulator'));
+	client.guilds.cache.every((guild) => guild.me.setNickname(BOT_NICKNAME));
 	client.user.setPresence({
-		game: {
+		activity: {
 			name: `*${prefix}* commands`,
 			type: 'LISTENING',
 		},
@@ -30,6 +31,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	// && message.channel.type !== 'dm'
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase() || 'ask';
@@ -91,12 +93,7 @@ client.on('message', message => {
 	}
 });
 
-try {
-	client.login(DISCORD_BOT_TOKEN).catch();
-}
-catch (err) {
-	throw err;
-}
+client.login(DISCORD_BOT_TOKEN);
 
 // so the program will not close instantly
 process.stdin.resume();
