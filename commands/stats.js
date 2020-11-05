@@ -9,7 +9,7 @@ module.exports = {
 		// const guildList = message.client.guilds.cache.map(guild => `• ${guild.name}`);
 
 		const data = [];
-		data.push(`Huh, I'm currently a member of ${message.client.guilds.cache.length} servers! That's pretty sweet!`);
+		data.push(`Huh, I can't do this right now... :(`);
 
 		if (message.author.id !== DISCORD_ADMIN_USERID) {
 			message.author.send(data, { split: true })
