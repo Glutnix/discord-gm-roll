@@ -9,15 +9,15 @@ module.exports = {
 		// const guildList = message.client.guilds.cache.map(guild => `• ${guild.name}`);
 
 		const data = [];
-		data.push(`Huh, I can't do this right now... :(`);
+		data.push('Huh, I can\'t do this right now... :(');
 
-		if (message.author.id !== DISCORD_ADMIN_USERID) {
-			message.author.send(data, { split: true })
-				.catch(err => {
-					message.reply(`... hmm... I couldn't send you a DM... ${err}`);
-				});
-			return;
-		}
+		// if (message.author.id !== DISCORD_ADMIN_USERID) {
+		message.author.send(data, { split: true })
+			.catch(err => {
+				message.reply(`... hmm... I couldn't send you a DM... ${err}`);
+			});
+		return;
+		// }
 
 		// // continue for the admin user
 
