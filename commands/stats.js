@@ -19,18 +19,18 @@ module.exports = {
 			return;
 		}
 
-		// continue for the admin user
+		// // continue for the admin user
 
-		data.push(...guildList);
+		// data.push(...guildList);
 
-		message.author.send(data, { split: true })
-			.then(() => {
-				if (message.channel.id !== message.author.dmChannel.id) {
-					message.reply('... oh, Hi there, boss! Sent you a DM.');
-				}
-			})
-			.catch(err => {
-				message.reply(`... hmm... I couldn't send you a DM... ${err}`);
-			});
+		// message.author.send(data, { split: true })
+		// 	.then(() => {
+		// 		if (message.channel.id !== message.author.dmChannel.id) {
+		// 			message.reply('... oh, Hi there, boss! Sent you a DM.');
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		message.reply(`... hmm... I couldn't send you a DM... ${err}`);
+		// 	});
 	},
 };
