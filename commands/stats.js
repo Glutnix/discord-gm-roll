@@ -6,10 +6,10 @@ module.exports = {
 	cooldown: 5,
 	execute(message) {
 		message.channel.send('Bot Statistics.');
-		const guildList = message.client.guilds.cache.map(guild => `• ${guild.name}`);
+		// const guildList = message.client.guilds.cache.map(guild => `• ${guild.name}`);
 
 		const data = [];
-		data.push(`Huh, I'm currently a member of ${guildList.length} servers! That's pretty sweet!`);
+		data.push(`Huh, I'm currently a member of ${message.client.guilds.cache.length} servers! That's pretty sweet!`);
 
 		if (message.author.id !== DISCORD_ADMIN_USERID) {
 			message.author.send(data, { split: true })
