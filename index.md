@@ -1,5 +1,5 @@
 
-## [Invite Game Master Emulator bot to your Discord server!](https://discordapp.com/api/oauth2/authorize?client_id=464728785107812352&permissions=0&scope=bot)
+## [Invite Game Master Emulator bot to your Discord server!](https://discordapp.com/api/oauth2/authorize?client_id=464728785107812352&permissions=0&scope=bot) ✨✨
 
 ## About the bot
 
