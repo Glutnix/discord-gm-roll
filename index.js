@@ -1,18 +1,34 @@
-const fs = require('fs');
+const fs = require('node:fs');
 const Discord = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { Routes } = require('discord-api-types/v9');
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+const DISCORD_BOT_CLIENT_ID = process.env.DISCORD_BOT_CLIENT_ID;
+const DISCORD_TEST_GUILD_ID = process.env.DISCORD_TEST_GUILD_ID;
 const BOT_NICKNAME = process.env.BOT_NICKNAME || 'GM Emulator';
 const prefix = process.env.BOT_COMMAND_PREFIX;
+
+const rootCommand = new SlashCommandBuilder()
+	.setName(prefix)
+	.setDescription('Game Master Emulator (discord-gm-roll)');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+	const commandFile = require(`./commands/${file}`);
+	rootCommand.addSubcommand(commandFile.subcommand);
 }
+commands.push(rootCommand.toJSON());
+
+console.log(rootCommand.toJSON());
+
+const rest = new REST({ version: '9' }).setToken(DISCORD_BOT_TOKEN);
 
 const cooldowns = new Discord.Collection();
 
@@ -27,46 +43,55 @@ client.on('ready', () => {
 		},
 		status: 'online',
 	});
+
+	(async () => {
+		try {
+			console.log('Started refreshing application (/) commands.');
+	
+			await rest.put(
+				Routes.applicationGuildCommands(DISCORD_BOT_CLIENT_ID, DISCORD_TEST_GUILD_ID),
+				// Routes.applicationCommands(DISCORD_BOT_CLIENT_ID),
+				{ body: commands },
+			);
+	
+			console.log('Successfully reloaded application (/) commands.');
+		} catch (error) {
+			console.error(error);
+		}
+	})();
 });
 
-client.on('message', message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
-	// && message.channel.type !== 'dm'
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+	console.log("got interaction", interaction);
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const commandName = args.shift().toLowerCase() || 'ask';
+	const commandName = interaction.commandName.toLowerCase() || 'ask';
 
 	let command = client.commands.get(commandName)
-	|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	// || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) {
-		args.unshift(commandName);
 		command = client.commands.get('ask');
 	}
-
+	
 	console.log('got command', command.name, args);
 
-	if (command.guildOnly && message.channel.type !== 'text') {
-		return message.reply('I can\'t execute that command inside DMs!');
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
+});
 
-	if (command.args && !args.length) {
-		let reply = `You didn't provide any arguments, ${message.author}! Try ${prefix} help ${commandName}`;
-
-		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix} ${command.name} ${command.usage}\``;
-		}
-
-		return message.channel.send(reply);
-	}
-
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
+const rootCommandExecute = async interaction => {
+	if (!cooldowns.has(interaction.name)) {
+		cooldowns.set(interaction.name, new Discord.Collection());
 	}
 
 	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 3) * 1000;
+	const timestamps = cooldowns.get(interaction.name);
+	const cooldownAmount = (interaction.cooldown || 3) * 1000;
 
 	if (!timestamps.has(message.author.id)) {
 		timestamps.set(message.author.id, now);
@@ -77,7 +102,7 @@ client.on('message', message => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${interaction.name}\` command.`);
 		}
 
 		timestamps.set(message.author.id, now);
@@ -85,7 +110,7 @@ client.on('message', message => {
 	}
 
 	try {
-		command.execute(message, args);
+		.execute(message, args);
 	}
 	catch (error) {
 		console.error(error);

@@ -1,10 +1,12 @@
 const DISCORD_ADMIN_USERID = process.env.DISCORD_ADMIN_USERID;
 
 module.exports = {
-	name: 'ping',
-	description: 'Ping!',
+	subcommand: (subcommand) => {return subcommand
+		.setName('ping')
+		.setDescription('Ping!')
+	},
 	cooldown: 5,
-	execute(message) {
-		message.channel.send('Pong.');
+	async execute(interaction) {
+		await interaction.reply('Pong. 🏓');
 	},
 };

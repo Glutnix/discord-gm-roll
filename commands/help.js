@@ -1,12 +1,13 @@
 const prefix = process.env.BOT_COMMAND_PREFIX;
 
 module.exports = {
-	name: 'help',
-	description: 'List all of my commands or info about a specific command.',
-	aliases: ['commands'],
+	subcommand: (subcommand) => {return subcommand
+		.setName('help')
+		.setDescription('List all of my commands or info about a specific command.')
+	},
 	usage: '[command name]',
 	cooldown: 3,
-	execute(message, args) {
+	async execute(interaction) {
 		const data = [];
 		const { commands } = message.client;
 
@@ -50,6 +51,6 @@ module.exports = {
 
 		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
 
-		message.channel.send(data, { split: true });
+		await interaction.reply(data, { split: true });
 	},
 };
