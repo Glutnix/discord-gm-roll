@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('node:fs');
 const Discord = require('discord.js');
 const { REST } = require('@discordjs/rest');
@@ -8,6 +9,8 @@ const DISCORD_BOT_CLIENT_ID = process.env.DISCORD_BOT_CLIENT_ID;
 const DISCORD_TEST_GUILD_ID = process.env.DISCORD_TEST_GUILD_ID;
 const BOT_NICKNAME = process.env.BOT_NICKNAME || 'GM Emulator';
 const prefix = process.env.BOT_COMMAND_PREFIX;
+
+console.log(prefix);
 
 const rootCommand = new SlashCommandBuilder()
 	.setName(prefix)
@@ -49,8 +52,8 @@ client.on('ready', () => {
 			console.log('Started refreshing application (/) commands.');
 	
 			await rest.put(
-				Routes.applicationGuildCommands(DISCORD_BOT_CLIENT_ID, DISCORD_TEST_GUILD_ID),
-				// Routes.applicationCommands(DISCORD_BOT_CLIENT_ID),
+				//Routes.applicationGuildCommands(DISCORD_BOT_CLIENT_ID, DISCORD_TEST_GUILD_ID),
+				Routes.applicationCommands(DISCORD_BOT_CLIENT_ID),
 				{ body: commands },
 			);
 	
@@ -110,13 +113,13 @@ const rootCommandExecute = async interaction => {
 	}
 
 	try {
-		.execute(message, args);
+		interaction.execute(message, args);
 	}
 	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
-});
+};
 
 client.login(DISCORD_BOT_TOKEN);
 
@@ -134,7 +137,9 @@ function exitHandler(options, err) {
 function cleanup() {
 	if (client) {
 		console.log('going offline.');
-		client.user.setStatus('invisible');
+		if(client.user) {
+			client.user.setStatus('invisible');
+		} 
 	}
 }
 
