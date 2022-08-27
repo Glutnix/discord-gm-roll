@@ -1,12 +1,10 @@
-const DISCORD_ADMIN_USERID = process.env.DISCORD_ADMIN_USERID;
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	subcommand: (subcommand) => {return subcommand
+	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Ping!')
-	},
-	cooldown: 5,
+		.setDescription('Replies with Pong!'),
 	async execute(interaction) {
-		await interaction.reply('Pong. 🏓');
+		await interaction.reply('Pong!');
 	},
 };

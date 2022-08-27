@@ -41,7 +41,7 @@ const rollChart = (chart) => {
 	return {
 		result: chart.table[diceRoll],
 		diceRoll: diceRoll + 1,
-		diceRolls: (diceRolls ? diceRolls.map(r => r + 1) : undefined),
+		diceRolls: (diceRolls ? diceRolls.map(r => r + 1) : undefined) || [],
 	};
 };
 

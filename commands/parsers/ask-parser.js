@@ -1,10 +1,8 @@
 const { findChart } = require('../../charts/chart-roller');
-const askParser = (args) => {
-	const load = args.join(' ');
-	const question = load.substring(0, load.lastIndexOf('?') + 1);
-
+const askParser = (question) => {
+	console.log(question);
 	// try each word and see if it's an alias.
-	const words = args.reverse();
+	const words = question.split(' ');
 	const alias = words.find((word) => {
 		return findChart(word.trim());
 	});

@@ -1,125 +1,47 @@
-require('dotenv').config();
-const fs = require('node:fs');
-const Discord = require('discord.js');
-const { REST } = require('@discordjs/rest');
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Routes } = require('discord-api-types/v9');
-const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const DISCORD_BOT_CLIENT_ID = process.env.DISCORD_BOT_CLIENT_ID;
-const DISCORD_TEST_GUILD_ID = process.env.DISCORD_TEST_GUILD_ID;
-const BOT_NICKNAME = process.env.BOT_NICKNAME || 'GM Emulator';
-const prefix = process.env.BOT_COMMAND_PREFIX;
+"require('dotenv').config();"
+const fs = require('fs');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const path = require('node:path');
+const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
+//const prefix = process.env.BOT_COMMAND_PREFIX || '/test';
 
-console.log(prefix);
+// const rootCommand = new SlashCommandBuilder()
+// 	.setName(prefix)
+// 	.setDescription('Game Master Emulator (discord-gm-roll)');
 
-const rootCommand = new SlashCommandBuilder()
-	.setName(prefix)
-	.setDescription('Game Master Emulator (discord-gm-roll)');
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
-
-const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commands = new Collection();
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 
 for (const file of commandFiles) {
-	const commandFile = require(`./commands/${file}`);
-	rootCommand.addSubcommand(commandFile.subcommand);
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	console.log(command.data.name);
+	commands.set(command.data.name, command);
 }
-commands.push(rootCommand.toJSON());
 
-console.log(rootCommand.toJSON());
-
-const rest = new REST({ version: '9' }).setToken(DISCORD_BOT_TOKEN);
-
-const cooldowns = new Discord.Collection();
-
-client.on('ready', () => {
-	console.log(`Ready! Listening for commands with ${prefix}`);
-	client.user.setUsername('Game Master Emulator');
-	client.guilds.cache.every((guild) => guild.me.setNickname(BOT_NICKNAME));
-	client.user.setPresence({
-		activity: {
-			name: `*${prefix}* commands`,
-			type: 'LISTENING',
-		},
-		status: 'online',
-	});
-
-	(async () => {
-		try {
-			console.log('Started refreshing application (/) commands.');
-	
-			await rest.put(
-				//Routes.applicationGuildCommands(DISCORD_BOT_CLIENT_ID, DISCORD_TEST_GUILD_ID),
-				Routes.applicationCommands(DISCORD_BOT_CLIENT_ID),
-				{ body: commands },
-			);
-	
-			console.log('Successfully reloaded application (/) commands.');
-		} catch (error) {
-			console.error(error);
-		}
-	})();
+client.once('ready', () => {
+	console.log(`Ready!`);
 });
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-	console.log("got interaction", interaction);
+client.on('interactionCreate', async (interaction) => {
+	if (!interaction.isChatInputCommand()) return;
 
-	const commandName = interaction.commandName.toLowerCase() || 'ask';
+	const command = commands.get(interaction.commandName);
 
-	let command = client.commands.get(commandName)
-	// || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-	if (!command) {
-		command = client.commands.get('ask');
-	}
-	
-	console.log('got command', command.name, args);
+	if (!command) return;
 
 	try {
 		await command.execute(interaction);
-	} catch (error) {
+	}
+	catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
-
-const rootCommandExecute = async interaction => {
-	if (!cooldowns.has(interaction.name)) {
-		cooldowns.set(interaction.name, new Discord.Collection());
-	}
-
-	const now = Date.now();
-	const timestamps = cooldowns.get(interaction.name);
-	const cooldownAmount = (interaction.cooldown || 3) * 1000;
-
-	if (!timestamps.has(message.author.id)) {
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	}
-	else {
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${interaction.name}\` command.`);
-		}
-
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	}
-
-	try {
-		interaction.execute(message, args);
-	}
-	catch (error) {
-		console.error(error);
-		message.reply('there was an error trying to execute that command!');
-	}
-};
 
 client.login(DISCORD_BOT_TOKEN);
 
@@ -139,7 +61,7 @@ function cleanup() {
 		console.log('going offline.');
 		if(client.user) {
 			client.user.setStatus('invisible');
-		} 
+		}
 	}
 }
 
